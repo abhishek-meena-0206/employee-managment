@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<style>
+.detail{
+	background-color:"red"
+
+
+}
+</style>
+<body>
+<form action="/1234addEmployee"  method="POST">
+
+	<input type="text" name="name"></br>
+	<input type="text" name="department"></br>
+      <input type= "int" name="id"></br>
+	<button>add employee</button>
+
+	
+
+</form>
+
+<div class="detail" id="detail_id" style ='position:relative;left:500px;height:200px;width:200px '>
+
+
+
+</div>
+
+<div>
+ <button class="list" >list all employee</button>
+<div class="listof" >
+
+
+
+</div>
+
+</div>
+<div class="edit" id="edit_id" style ='position:relative;left:500px;height:200px;width:200px ' >
+
+</div >
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+<script language="javascript" type="text/javascript" >
+    function editvalue(e,i){
+
+  var url="/changevalue?id="+i
+  alert(url)
+            var detail="<form action="+url+" method='post'> <table><tr><th> name: </th> <th><input type='text' name='name' value="+e+"> </th></tr><tr><th> department: </th> <th> <input type='text' name='department' >  </th></tr><tr></table> <button> save</button></form> "
+
+  $(".detail").html(detail)
+             
+               
+      
+
+    }
+    function del(){
+
+        alert("okl")
+    }
+function fun(e){
+
+ const num=e;
+ $.ajax({
+            type: 'get',
+            url: '/a?id='+num,
+            
+            dataType: 'text'
+        })
+        .done(function(data){
+            const json=JSON.parse(data)
+           var del ="/del/"+e
+            var detail="<table><tr><th> name: </th> <th>"+json.name+"</th></tr><tr><th> department: </th> <th>"+json.department+"</th></tr><tr><th> id: </th> <th>"+json.id+"</th></tr><tr><th><button value="+json.id+"  onclick='editvalue(\" " + json.name + "\","+json.id+")' >edit</button> </th> <th> <form action="+del+" ><button > delete</button></form></th></tr> </table> "
+
+            $('.detail').html(   detail );
+
+
+        })
+       
+
+
+}
+    
+$(document).ready(function(){
+
+    $(".list").on('click', function(e){
+        e.preventDefault();
+
+       
+        $.ajax({
+            type: 'get',
+            url: '/ajax',
+            
+            dataType: 'text'
+        })
+        .done(function(data){
+
+        var d=JSON.parse(data)
+
+
+var content=""
+   for(var i=0;i<d.length;i++){
+
+   content+="<p class='user' id='user_id' value="+d[i].id+" onclick='fun("+d[i].id +")' >"+d[i].name+"</p> "
+   }
+            $('.listof').html(content);
+        });
+    });
+});
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</html>
